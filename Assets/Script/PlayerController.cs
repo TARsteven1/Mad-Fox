@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
 
     public int JumpCount;
+
     [Header("Dash参数")]
     public float dashTime;
     private float dashTimeLeft;
@@ -44,6 +45,10 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed;
 
     public bool isDashing;
+    public Image CDImage;
+
+    public Button dashBtn;
+    private bool isdashBtn;
 
 
     // Start is called before the first frame update
@@ -51,6 +56,8 @@ public class PlayerController : MonoBehaviour
     {
         rb =GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+      
+        
     }
 
     // Update is called once per frame
@@ -77,19 +84,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!isRelife)
         {
-            if (Input.GetButtonDown("Jump")&&JumpCount>0)
-            {
-                jumpPressed = true;
-            }    
-                Crouch();
-            //冲锋
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                if (Time.time>= lastDash+dashCoolDown)
-                {
-                    ReadyToDash();
-                }
-            }
+            Crouch();
+            PresseDash();
         }
     }
     void Movement()
@@ -311,32 +307,66 @@ public class PlayerController : MonoBehaviour
             
     }*/
     void NewnewJump() {
-        if (isGround)
+        if (isVritualControl.isOn)
         {
-            JumpCount = 2;
-            isJump = false;
+            if (isGround)
+            {
+                JumpCount = 2;
+                isJump = false;
+            }
+            if (Joystick.Vertical > 0.5f && isGround)
+            {
+                isJump = true;
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                JumpCount--;
+                SoundManager.instance.JumpAudio();
+                anim.SetBool("jumping", true);
+                anim.SetBool("crouch", false);
+                anim.SetBool("falling", false);
+             
+            }
+            else if (Joystick.Vertical > 0.5f && JumpCount > 0 && isJump)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                JumpCount--;
+                SoundManager.instance.JumpAudio();
+                anim.SetBool("jumping", true);
+                anim.SetBool("crouch", false);
+                anim.SetBool("falling", false);
+             
+            }
         }
-        if (jumpPressed&&isGround)
+        else
         {
-            isJump = true;
-            rb.velocity =new Vector2(rb.velocity.x, jumpforce);
-            JumpCount--;
-            SoundManager.instance.JumpAudio();
-            anim.SetBool("jumping", true);
-            anim.SetBool("crouch", false);
-            anim.SetBool("falling", false);
-            jumpPressed = false;
+            if (isGround)
+            {
+                JumpCount = 2;
+                isJump = false;
+            }
+            if (jumpPressed && isGround)
+            {
+                isJump = true;
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                JumpCount--;
+                SoundManager.instance.JumpAudio();
+                anim.SetBool("jumping", true);
+                anim.SetBool("crouch", false);
+                anim.SetBool("falling", false);
+                jumpPressed = false;
+            }
+            else if (jumpPressed && JumpCount > 0 && isJump)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                JumpCount--;
+                SoundManager.instance.JumpAudio();
+                anim.SetBool("jumping", true);
+                anim.SetBool("crouch", false);
+                anim.SetBool("falling", false);
+                jumpPressed = false;
+            }
         }
-        else if (jumpPressed &&JumpCount> 0&& isJump)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-            JumpCount--;
-            SoundManager.instance.JumpAudio();
-            anim.SetBool("jumping", true);
-            anim.SetBool("crouch", false);
-            anim.SetBool("falling", false);
-            jumpPressed = false;
-        }
+
+            
     
     }
     void Crouch()
@@ -421,6 +451,7 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         dashTimeLeft = dashTime;
         lastDash = Time.time;
+        CDImage.fillAmount = 1;
     }
     void Dash() {
         if (isDashing)
@@ -448,6 +479,38 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void DashBtnOnClick() {
+        if (Joystick.Vertical > 0.5f&& JumpCount > 0)
+        {
+            jumpPressed = true;
+        }
+        //冲锋
+        if (Time.time >= lastDash + dashCoolDown)
+        {
+            ReadyToDash();
+        }     
+        CDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+    }
+    void PresseDash() {
+        
+            if (Input.GetButtonDown("Jump") && JumpCount > 0)
+            {
+                jumpPressed = true;
+            }
+
+            //冲锋
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                if (Time.time >= lastDash + dashCoolDown)
+                {
+                    ReadyToDash();
+                }
+            }
+            CDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+        }
+            
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
 
