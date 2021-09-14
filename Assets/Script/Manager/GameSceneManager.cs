@@ -11,11 +11,12 @@ public class GameSceneManager : MonoBehaviour
     public GameObject pauseMenu;
     public AudioMixer audioMixer;
     public AudioMixer otheraudioMixer;
-    public VideoPlayer openvp;
+    //public VideoPlayer openvp;
    
 
     public void PlayGame() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        DontDestroyOnLoad(this);
     }
     public void QuitGame() {
         Application.Quit();

@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     public Image CDImage;
 
     public Button dashBtn;
-    private bool isdashBtn;
+   
 
 
     // Start is called before the first frame update
@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
             }
             SwitchAnim();
             NewnewJump();
-            
+
+            //Debug.Log(rb.velocity.y + "XXXX" + Time.deltaTime);
         }
        
     }
@@ -112,20 +113,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            //float horizontalmove = Input.GetAxis("Horizontal");
-            //float facedircetion = Input.GetAxisRaw("Horizontal");
-
-            //if (horizontalmove != 0)
-            //{
-
-            //    rb.velocity = new Vector2(horizontalmove * Speed * Time.fixedDeltaTime, rb.velocity.y);
-            //    anim.SetFloat("running", Mathf.Abs(facedircetion));
-            //}
-            //if (facedircetion != 0)
-            //{
-
-            //    transform.localScale = new Vector3(facedircetion, 1, 1);
-            //}
             horizontalmove = Input.GetAxisRaw("Horizontal");
             anim.SetFloat("running", Mathf.Abs(horizontalmove));
             if (horizontalmove != 0)
@@ -141,20 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isVritualControl.isOn)
         {
-            if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
-            {
-                anim.SetBool("falling", true);
-            }
-            if (anim.GetBool("jumping"))
-            {
-                if (rb.velocity.y < 0)
-                {
-                    anim.SetBool("jumping", false);
-                    anim.SetBool("falling", true);
-                }
-
-            }
-            else if (isHurt)
+            if (isHurt)
             {
                 anim.SetBool("hurt", true);
                 anim.SetFloat("running", 0);
@@ -162,32 +136,83 @@ public class PlayerController : MonoBehaviour
                 {
                     isHurt = false;
                     anim.SetBool("hurt", false);
-
                 }
             }
-            else if (coll.IsTouchingLayers(ground))
-            {
-                anim.SetBool("falling", false);
-
-            }
-        }
-        else
-        {
             anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
             if (isGround)
             {
                 anim.SetBool("falling", false);
             }
-            else if (!isGround&&rb.velocity.y > 0)
-            {
-                anim.SetBool("jumping", true);
-            }
+            //else if (!isGround && rb.velocity.y > 0)
+            //{
+            //    anim.SetBool("jumping", true);
+            //}
             else if (rb.velocity.y < 0)
             {
                 anim.SetBool("falling", true);
                 anim.SetBool("jumping", false);
 
             }
+            //if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
+            //{
+            //    anim.SetBool("falling", true);
+            //}
+            //else if (anim.GetBool("jumping"))
+            //{
+            //    if (rb.velocity.y < 0)
+            //    {
+            //        anim.SetBool("jumping", false);
+            //        anim.SetBool("falling", true);
+            //    }
+
+            //}
+            //else if (isHurt)
+            //{
+            //    anim.SetBool("hurt", true);
+            //    anim.SetFloat("running", 0);
+            //    if (Mathf.Abs(rb.velocity.x) < 0.1f)
+            //    {
+            //        isHurt = false;
+            //        anim.SetBool("hurt", false);
+
+            //    }
+            //}
+            //else if (coll.IsTouchingLayers(ground))
+            //{
+            //    anim.SetBool("falling", false);
+
+            //}
+        }
+        else
+        {
+            if(isHurt)
+            {
+                anim.SetBool("hurt", true);
+                anim.SetFloat("running", 0);
+                if (Mathf.Abs(rb.velocity.x) < 0.1f)
+                {
+                    isHurt = false;
+                    anim.SetBool("hurt", false);
+                }
+            }
+            anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
+            if (isGround)
+            {
+                anim.SetBool("falling", false);
+           
+            }
+            //else if (!isGround&&rb.velocity.y > 0)
+            //{
+            //    anim.SetBool("jumping", true);
+            //}
+            if(rb.velocity.y < 0)
+            {
+               
+                anim.SetBool("falling", true);
+                anim.SetBool("jumping", false);
+
+            }
+          
             //if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
             //{
             //    anim.SetBool("falling", true);
@@ -210,16 +235,16 @@ public class PlayerController : MonoBehaviour
             //    {
             //        isHurt = false;
             //        anim.SetBool("hurt", false);
-                    
+
             //    }
             //}
             //else if (coll.IsTouchingLayers(ground))
             //{
             //    anim.SetBool("falling", false);
-               
+
             //}
         }
-            
+
     }
     //void Jump() {
     //    if (isVritualControl.isOn)
@@ -430,16 +455,16 @@ public class PlayerController : MonoBehaviour
             {
                 enemies.JumpOn();
 
-                rb.velocity = new Vector2(rb.velocity.x, jumpforce * Time.fixedDeltaTime);
+                rb.velocity = new Vector2(rb.velocity.x, jumpforce );
                 anim.SetBool("jumping", true);
             }
         }
         else
         {
             if (collision.gameObject.tag == "Enemies")
-            {          
-                //反向力
-                rb.velocity = new Vector2((transform.position.x-collision.gameObject.transform.position.x) * Speed * Time.fixedDeltaTime, rb.velocity.y);
+            {
+                //反向力   
+                rb.velocity = new Vector2((transform.position.x-collision.gameObject.transform.position.x) * Speed*1.2f, rb.velocity.y);
                 anim.SetBool("hurt", true);
                 SoundManager.instance.HurtAudio();
                 isHurt = true;
