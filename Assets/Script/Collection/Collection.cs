@@ -5,18 +5,9 @@ using UnityEngine;
 public class Collection : MonoBehaviour
 {
     public void GetItem() {
-        FindObjectOfType<PlayerController>().GetItem();
+        FindObjectOfType<PlayerController>().GetItemCount();
         Destroy(gameObject);
     }
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

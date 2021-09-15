@@ -66,16 +66,18 @@ public class PlayerController : MonoBehaviour
     {
         if (!isRelife)
         {
-            if (!isHurt)
-            {
-                isGround = Physics2D.OverlapCircle(GroundCheck.position, 0.1f, ground);
+            if (!isHurt) { 
+
+               
+                isGround = Physics2D.OverlapCircle(GroundCheck.position, 0.2f, ground);
                 Dash();
                 if (isDashing) return;
                
                 Movement();
+                NewnewJump();
             }
             SwitchAnim();
-            NewnewJump();
+            
 
             //Debug.Log(rb.velocity.y + "XXXX" + Time.deltaTime);
         }
@@ -126,65 +128,47 @@ public class PlayerController : MonoBehaviour
     
     void SwitchAnim()
     {
-        if (isVritualControl.isOn)
-        {
-            if (isHurt)
-            {
-                anim.SetBool("hurt", true);
-                anim.SetFloat("running", 0);
-                if (Mathf.Abs(rb.velocity.x) < 0.1f)
-                {
-                    isHurt = false;
-                    anim.SetBool("hurt", false);
-                }
-            }
-            anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
-            if (isGround)
-            {
-                anim.SetBool("falling", false);
-            }
-            //else if (!isGround && rb.velocity.y > 0)
-            //{
-            //    anim.SetBool("jumping", true);
-            //}
-            else if (rb.velocity.y < 0)
-            {
-                anim.SetBool("falling", true);
-                anim.SetBool("jumping", false);
-
-            }
-            //if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
-            //{
-            //    anim.SetBool("falling", true);
-            //}
-            //else if (anim.GetBool("jumping"))
-            //{
-            //    if (rb.velocity.y < 0)
-            //    {
-            //        anim.SetBool("jumping", false);
-            //        anim.SetBool("falling", true);
-            //    }
-
-            //}
-            //else if (isHurt)
-            //{
-            //    anim.SetBool("hurt", true);
-            //    anim.SetFloat("running", 0);
-            //    if (Mathf.Abs(rb.velocity.x) < 0.1f)
-            //    {
-            //        isHurt = false;
-            //        anim.SetBool("hurt", false);
-
-            //    }
-            //}
-            //else if (coll.IsTouchingLayers(ground))
-            //{
-            //    anim.SetBool("falling", false);
-
-            //}
-        }
-        else
-        {
+        //if (isVritualControl.isOn)
+        //{
+        //    if (isHurt)
+        //    {
+        //        anim.SetBool("hurt", true);
+        //        anim.SetFloat("running", 0);
+        //        if (Mathf.Abs(rb.velocity.x) < 0.1f)
+        //        {
+        //            isHurt = false;
+        //            anim.SetBool("hurt", false);
+        //        }
+        //    }
+        //    //anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
+        //    if (isGround)
+        //    {
+                
+        //        anim.SetBool("falling", false);
+        //         if (rb.velocity.y < 0) {
+                    
+        //            anim.SetBool("falling", false); }
+        //    }
+        //    //else if (!isGround && rb.velocity.y > 0)
+        //    //{
+        //    //    anim.SetBool("jumping", true);
+        //    //}
+        //    else
+        //    {
+        //        if (rb.velocity.y < 0) {
+                  
+        //            anim.SetBool("falling", true);
+        //        anim.SetBool("jumping", false);
+        //    }
+        //        else if ( rb.velocity.y > 0)
+        //        {
+        //            anim.SetBool("jumping", true);
+        //        }
+        //    }
+          
+        //}
+       // else
+       //{
             if(isHurt)
             {
                 anim.SetBool("hurt", true);
@@ -195,55 +179,32 @@ public class PlayerController : MonoBehaviour
                     anim.SetBool("hurt", false);
                 }
             }
-            anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
+           // anim.SetFloat("running", Mathf.Abs(rb.velocity.x));
             if (isGround)
             {
                 anim.SetBool("falling", false);
-           
+                if (rb.velocity.y < 0)
+                {
+                    anim.SetBool("falling", false);
+                }
+
             }
-            //else if (!isGround&&rb.velocity.y > 0)
-            //{
-            //    anim.SetBool("jumping", true);
-            //}
-            if(rb.velocity.y < 0)
+            else
             {
-               
+                if (rb.velocity.y < 0)
+                {
+                    
+                anim.SetFloat("running", 0);
                 anim.SetBool("falling", true);
-                anim.SetBool("jumping", false);
-
-            }
-          
-            //if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
-            //{
-            //    anim.SetBool("falling", true);
-            //}
-            //if (anim.GetBool("jumping"))
-            //{
-            //    if (rb.velocity.y < 0)
-            //    {
-            //        anim.SetBool("jumping", false);
-            //        anim.SetBool("falling", true);
-
-            //    }
-
-            //}
-            //else if (isHurt)
-            //{
-            //    anim.SetBool("hurt", true);
-            //    anim.SetFloat("running", 0);
-            //    if (Mathf.Abs(rb.velocity.x) < 0.1f)
-            //    {
-            //        isHurt = false;
-            //        anim.SetBool("hurt", false);
-
-            //    }
-            //}
-            //else if (coll.IsTouchingLayers(ground))
-            //{
-            //    anim.SetBool("falling", false);
-
-            //}
-        }
+               anim.SetBool("jumping", false);
+                }
+                else if (rb.velocity.y > 0)
+                {
+                    anim.SetBool("jumping", true);
+                }
+           // }        
+        
+       }
 
     }
     //void Jump() {
@@ -436,7 +397,9 @@ public class PlayerController : MonoBehaviour
 
             collision.GetComponent<Animator>().Play("Get");
             SoundManager.instance.CollectionAudio();
-            
+            JumpCount++;
+
+
         }
         else if (collision.tag == "Collection" && collision.name == "Damon")
         {
@@ -553,7 +516,7 @@ public class PlayerController : MonoBehaviour
         isRelife = false;    
         anim.SetTrigger("norelife");
     }
-    public void GetItem() {
+    public void GetItemCount() {
         Cherry++;
         CherryCount.text = Cherry.ToString();
     }
