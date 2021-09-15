@@ -50,7 +50,10 @@ public class PlayerController : MonoBehaviour
 
 
     public Button dashBtn;
+
+    private int JumpClock;
    
+
 
 
     // Start is called before the first frame update
@@ -58,8 +61,9 @@ public class PlayerController : MonoBehaviour
     {
         rb =GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-      
-        
+       
+
+
     }
 
     // Update is called once per frame
@@ -72,6 +76,7 @@ public class PlayerController : MonoBehaviour
 
                
                 isGround = Physics2D.OverlapCircle(GroundCheck.position, 0.2f, ground);
+               
                 Dash();
                 if (isDashing) return;
                
@@ -97,23 +102,14 @@ public class PlayerController : MonoBehaviour
     {
         if (isVritualControl.isOn)
         {
-            horizontalmove = Joystick.Horizontal;
-            float facedircetion = Joystick.Horizontal;
-            if (horizontalmove != 0)
+            float horizontalvmove = Joystick.Horizontal;
+            anim.SetFloat("running", Mathf.Abs(horizontalvmove));
+            if (horizontalvmove != 0)
             {
+                rb.velocity = new Vector2(horizontalvmove * Speed, rb.velocity.y);
+                transform.localScale = new Vector3((horizontalvmove>=0?1:-1) ,1, 1);
 
-                rb.velocity = new Vector2(horizontalmove * Speed * Time.fixedDeltaTime, rb.velocity.y);
-                anim.SetFloat("running", Mathf.Abs(facedircetion));
-            }
-            if (facedircetion > 0)
-            {
-
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            if (facedircetion < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
+            }         
         }
         else
         {
@@ -209,91 +205,6 @@ public class PlayerController : MonoBehaviour
        }
 
     }
-    //void Jump() {
-    //    if (isVritualControl.isOn)
-    //    {
-    //        if (Joystick.Vertical > 0.5f && coll.IsTouchingLayers(ground))
-    //        {
-
-    //            rb.velocity = new Vector2(rb.velocity.x, jumpforce * Time.deltaTime);
-    //            jumpAudio.Play();
-    //            //jumpAudio.PlayOneShot(clip);
-    //            anim.SetBool("jumping", true);
-    //            anim.SetBool("crouch", false);
-    //            anim.SetBool("falling", false);
-
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
-    //        {
-    //            rb.velocity = new Vector2(rb.velocity.x, jumpforce * Time.deltaTime);
-    //            jumpAudio.Play();
-    //            //jumpAudio.PlayOneShot(clip);
-    //            anim.SetBool("jumping", true);
-    //            anim.SetBool("crouch", false);
-    //            anim.SetBool("falling", false);
-    //        }
-    //    }  
-    //}
-    /*void NewJump() {
-        if (isVritualControl.isOn)
-        {
-            if (isGround)
-            {
-                extraJump = 1;
-
-            }
-            if (Joystick.Vertical > 0.5f && extraJump > 0)
-            {
-                rb.velocity = Vector2.up * jumpforce;
-                extraJump--;
-                AudioManager.Instance.JumpAudio();
-                jumpAudio.Play();
-                //jumpAudio.PlayOneShot(clip);
-                anim.SetBool("jumping", true);
-                anim.SetBool("crouch", false);
-                anim.SetBool("falling", false);
-            }
-            if (Joystick.Vertical > 0.5f && extraJump == 0 && isGround)
-            {
-                rb.velocity = Vector2.up * jumpforce;
-                AudioManager.Instance.JumpAudio();
-                //jumpAudio.Play();
-                anim.SetBool("jumping", true);
-                anim.SetBool("crouch", false);
-                anim.SetBool("falling", false);
-            }
-        }
-        else
-        {
-            if (isGround)
-            {
-                extraJump = 1;
-
-            }
-            if (Input.GetButtonDown("Jump") && extraJump > 0)
-            {
-                rb.velocity = Vector2.up * jumpforce;
-                extraJump--;
-                jumpAudio.Play();
-                //jumpAudio.PlayOneShot(clip);
-                anim.SetBool("jumping", true);
-                anim.SetBool("crouch", false);
-                anim.SetBool("falling", false);
-            }
-            if (Input.GetButtonDown("Jump") && extraJump == 0 && isGround)
-            {
-                rb.velocity = Vector2.up * jumpforce;
-                jumpAudio.Play();
-                anim.SetBool("jumping", true);
-                anim.SetBool("crouch", false);
-                anim.SetBool("falling", false);
-            }
-        }
-            
-    }*/
     void NewnewJump() {
         if (isVritualControl.isOn)
         {
@@ -301,27 +212,30 @@ public class PlayerController : MonoBehaviour
             {
                 JumpCount = 2;
                 isJump = false;
-            }
-            if (Joystick.Vertical > 0.5f && isGround)
+               
+                if (Joystick.Vertical > 0.5f|| JumpClock > 0)
+                {
+                    isJump = true;
+                    rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+                    JumpCount--;
+                    SoundManager.instance.JumpAudio();
+                    anim.SetBool("jumping", true);
+                    anim.SetBool("crouch", false);
+                    anim.SetBool("falling", false);
+                    JumpClock--;
+
+                }
+
+            }        
+           else if (Joystick.Vertical > 0.5f&& JumpCount > 0 && isJump && JumpClock > 0)
             {
-                isJump = true;
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
                 JumpCount--;
                 SoundManager.instance.JumpAudio();
                 anim.SetBool("jumping", true);
                 anim.SetBool("crouch", false);
                 anim.SetBool("falling", false);
-             
-            }
-            else if (Joystick.Vertical > 0.5f && JumpCount > 0 && isJump)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                JumpCount--;
-                SoundManager.instance.JumpAudio();
-                anim.SetBool("jumping", true);
-                anim.SetBool("crouch", false);
-                anim.SetBool("falling", false);
-             
+                JumpClock = 0;
             }
         }
         else
@@ -372,7 +286,7 @@ public class PlayerController : MonoBehaviour
                 {
                     anim.SetBool("crouch", false);
                     crouchcoll.isTrigger = false;
-                    //anim.SetBool("idle", true);
+                   
                 }
             }
             else
@@ -469,6 +383,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+    public void JumpBtnOnClick() {
+      
+            JumpClock++;
+                     
     }
 
     public void DashBtnOnClick() {
