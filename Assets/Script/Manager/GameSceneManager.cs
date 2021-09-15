@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using UnityEngine.Video;
+using UnityEngine.UI;
 
 
 public class GameSceneManager : MonoBehaviour
@@ -11,7 +12,11 @@ public class GameSceneManager : MonoBehaviour
     public GameObject pauseMenu;
     public AudioMixer audioMixer;
     public AudioMixer otheraudioMixer;
+    public GameObject dashIcon;
+    public Toggle Open;
     //public VideoPlayer openvp;
+
+
    
 
     public void PlayGame() {
@@ -30,6 +35,14 @@ public class GameSceneManager : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
     }
+    public void SetDashIcon() {
+      
+        dashIcon.SetActive(!Open.isOn);
+    }
+    //public void QuitGame()
+    //{
+    //   SceneManager.LoadScene(SceneManager.GetSceneByName(""),LoadSceneMode.Single)
+    //}
     public void SetVolume(float value) {
         audioMixer.SetFloat("MainVolume", value);
         

@@ -243,7 +243,8 @@ MonoBehaviour:
   dashCoolDown: 1
   dashSpeed: 50
   isDashing: 0
-  CDImage: {fileID: 0}
+  BtnCDImage: {fileID: 0}
+  IconCDImage: {fileID: 0}
   dashBtn: {fileID: 0}
 --- !u!95 &6901536186446507861
 Animator:

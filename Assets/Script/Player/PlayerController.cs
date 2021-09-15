@@ -45,7 +45,9 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed;
 
     public bool isDashing;
-    public Image CDImage;
+    public Image BtnCDImage;
+    public Image IconCDImage;
+
 
     public Button dashBtn;
    
@@ -392,7 +394,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag=="Collection"&&collision.name=="Cherry")
+        if (collision.tag=="Collection")
         {
 
             collision.GetComponent<Animator>().Play("Get");
@@ -439,7 +441,8 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         dashTimeLeft = dashTime;
         lastDash = Time.time;
-        CDImage.fillAmount = 1;
+        BtnCDImage.fillAmount = 1;
+       IconCDImage.fillAmount = 1;
     }
     void Dash() {
         if (isDashing)
@@ -478,7 +481,8 @@ public class PlayerController : MonoBehaviour
         {
             ReadyToDash();
         }     
-        CDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+        BtnCDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+        IconCDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
     }
     void PresseDash() {
         
@@ -495,8 +499,11 @@ public class PlayerController : MonoBehaviour
                     ReadyToDash();
                 }
             }
-            CDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
-        }
+            BtnCDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+            IconCDImage.fillAmount -= 1.0f / dashCoolDown * Time.deltaTime;
+
+
+    }
             
     
     private void OnTriggerExit2D(Collider2D collision)
