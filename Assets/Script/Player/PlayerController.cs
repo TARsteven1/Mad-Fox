@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isRelife)
         {
+            SwitchAnim();
             if (!isHurt) { 
 
                
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour
                 Movement();
                 NewnewJump();
             }
-            SwitchAnim();
+           
             
 
             //Debug.Log(rb.velocity.y + "XXXX" + Time.deltaTime);
@@ -350,6 +351,20 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+    }
+    void OnCollisionStay2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.tag == "Enemies")
+        {
+            //反向力   
+            rb.velocity = new Vector2((transform.position.x - collision.gameObject.transform.position.x) * Speed * 1.2f, rb.velocity.y);
+            anim.SetBool("hurt", true);
+            SoundManager.instance.HurtAudio();
+            isHurt = true;
+
+        }
+       
     }
     void ReadyToDash() {
         isDashing = true;

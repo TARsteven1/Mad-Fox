@@ -17,6 +17,9 @@ public class Enrmy_opossum : Enemies
     public GameObject ChatImage;
     private bool giveup = true;
 
+    public Collider2D wallColl;
+    public LayerMask ground;
+
 
 
     // Start is called before the first frame update
@@ -51,14 +54,14 @@ public class Enrmy_opossum : Enemies
             Attack();
         }
         //Following = coll.IsTouching(targetPlayer.GetComponent<Collider2D>());
-        //Debug.Log(Following);
+       // Debug.Log(wallColl.IsTouchingLayers(ground));
 
     }
     void Attack() {
     
         rb.velocity = new Vector2((targetPlayer.transform.position.x - transform.position.x) * Speed, transform.position.y);
         //Following = !coll.IsTouching(targetPlayer.GetComponent<Collider2D>());      
-        if (!Following && giveup)
+        if (wallColl.IsTouchingLayers(ground) && giveup)
         {
 
             Invoke("giveupFollowing", 2.0f);
@@ -105,19 +108,15 @@ public class Enrmy_opossum : Enemies
         if (collision.tag == "Player")
         {
             Attacking = true;
-            Following = true;
+            //Following = true;
+            //rb.velocity = new Vector2((transform.position.x - collision.gameObject.transform.position.x) * 0.5f, rb.velocity.y);
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
 
-    }
         void giveupFollowing() {
         
         Anim.SetTrigger("give");
-        transform.localScale = new Vector3((targetPlayer.transform.position.x - transform.position.x) >= 0 ? 1 : -1, 1, 1);
-      
-
+        transform.localScale = new Vector3((targetPlayer.transform.position.x - transform.position.x) >= 0 ? 1 : -1, 1, 1);     
             ChatImage.SetActive(true);
             Invoke("unlook", 1.5f);
 

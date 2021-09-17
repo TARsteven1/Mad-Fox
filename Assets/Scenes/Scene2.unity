@@ -628,6 +628,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204775870}
   m_CullTransparentMesh: 0
+--- !u!70 &261712527 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6038016335939339206, guid: 04921f2408771ad408e1df79e82e0bc4,
+    type: 3}
+  m_PrefabInstance: {fileID: 3125115347169216928}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &331077455
 GameObject:
   m_ObjectHideFlags: 0
@@ -7242,6 +7248,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2043703895}
     m_Modifications:
+    - target: {fileID: 709939547942656519, guid: 04921f2408771ad408e1df79e82e0bc4,
+        type: 3}
+      propertyPath: wallColl
+      value: 
+      objectReference: {fileID: 261712527}
+    - target: {fileID: 709939547942656519, guid: 04921f2408771ad408e1df79e82e0bc4,
+        type: 3}
+      propertyPath: ground.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 2766580393261514681, guid: 04921f2408771ad408e1df79e82e0bc4,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7352,6 +7368,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: opossum
       objectReference: {fileID: 0}
+    - target: {fileID: 3125115346973397386, guid: 04921f2408771ad408e1df79e82e0bc4,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476097632054090834, guid: 04921f2408771ad408e1df79e82e0bc4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395227845417981, guid: 04921f2408771ad408e1df79e82e0bc4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 27080025028fb124dadf40d8f88a8efd,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04921f2408771ad408e1df79e82e0bc4, type: 3}
 --- !u!1001 &6283275671796777770
