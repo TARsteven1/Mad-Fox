@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy_Frog : Enemies
 {
-    public Rigidbody2D rb;
+    //public Rigidbody2D rb;
    // private Animator Anim;
     private Collider2D Coll;
     public LayerMask ground;
@@ -16,7 +16,7 @@ public class Enemy_Frog : Enemies
     protected override void Start()
     {
         base.Start();
-        rb = GetComponent<Rigidbody2D>();
+       // rb = GetComponent<Rigidbody2D>();
        // Anim = GetComponent<Animator>();
         Coll = GetComponent<Collider2D>();
         //断绝父子关系
